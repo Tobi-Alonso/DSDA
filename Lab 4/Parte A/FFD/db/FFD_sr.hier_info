@@ -1,0 +1,9 @@
+|FFD_sr
+set_int => Sal_int.IN0
+reset_int => Sal_int~reg0.ACLR
+reset_int => Sal_int.IN1
+data_int => Sal_int~reg0.DATAIN
+clk_int => Sal_int~reg0.CLK
+Sal_int <= Sal_int~reg0.DB_MAX_OUTPUT_PORT_TYPE
+
+
