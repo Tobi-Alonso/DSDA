@@ -1,0 +1,41 @@
+# Copyright (C) 1991-2015 Altera Corporation. All rights reserved.
+# Your use of Altera Corporation's design tools, logic functions 
+# and other software and tools, and its AMPP partner logic 
+# functions, and any output files from any of the foregoing 
+# (including device programming or simulation files), and any 
+# associated documentation or information are expressly subject 
+# to the terms and conditions of the Altera Program License 
+# Subscription Agreement, the Altera Quartus Prime License Agreement,
+# the Altera MegaCore Function License Agreement, or other 
+# applicable license agreement, including, without limitation, 
+# that your use is for the sole purpose of programming logic 
+# devices manufactured by Altera and sold by Altera or its 
+# authorized distributors.  Please refer to the applicable 
+# agreement for further details.
+
+# Quartus Prime Version 15.1.0 Build 185 10/21/2015 SJ Lite Edition
+# File: C:\Users\tobia\Google Drive\Facu\9 semestre\VHDL - FPGA\Proyectos\Lab 4\SintetizadorFrecconPLL\SintetizadorFrecconPLL.csv
+# Generated on: Sun May 01 15:17:15 2016
+
+# Note: The column header names should not be changed if you wish to import this .csv file into the Quartus Prime software.
+
+To,Direction,Location,I/O Bank,VREF Group,I/O Standard,Reserved,Current Strength,Slew Rate,Differential Pair,Strict Preservation
+clock_50,Input,PIN_Y2,2,B2_N0,3.3-V LVCMOS,,,,,
+clock_out,Output,PIN_G19,7,B7_N2,,,,,,
+clock_sel[0],Input,PIN_AB28,5,B5_N1,,,,,,
+clock_sel[1],Input,PIN_AC28,5,B5_N2,,,,,,
+clock_sel[2],Input,PIN_AC27,5,B5_N2,,,,,,
+siete_seg0[0],Output,PIN_G18,7,B7_N2,,,,,,
+siete_seg0[1],Output,PIN_F22,7,B7_N0,,,,,,
+siete_seg0[2],Output,PIN_E17,7,B7_N2,,,,,,
+siete_seg0[3],Output,PIN_L26,6,B6_N1,,,,,,
+siete_seg0[4],Output,PIN_L25,6,B6_N1,,,,,,
+siete_seg0[5],Output,PIN_J22,6,B6_N0,,,,,,
+siete_seg0[6],Output,PIN_H22,6,B6_N0,,,,,,
+siete_seg1[0],Output,PIN_M24,6,B6_N2,,,,,,
+siete_seg1[1],Output,PIN_Y22,5,B5_N0,,,,,,
+siete_seg1[2],Output,PIN_W21,5,B5_N1,,,,,,
+siete_seg1[3],Output,PIN_W22,5,B5_N0,,,,,,
+siete_seg1[4],Output,PIN_W25,5,B5_N1,,,,,,
+siete_seg1[5],Output,PIN_U23,5,B5_N1,,,,,,
+siete_seg1[6],Output,PIN_U24,5,B5_N0,,,,,,
