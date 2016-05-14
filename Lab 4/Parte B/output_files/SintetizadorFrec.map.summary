@@ -1,0 +1,14 @@
+Analysis & Synthesis Status : Successful - Thu May 12 14:21:07 2016
+Quartus Prime Version : 15.1.0 Build 185 10/21/2015 SJ Lite Edition
+Revision Name : SintetizadorFrec
+Top-level Entity Name : SintetizadorFrec
+Family : Cyclone IV E
+Total logic elements : 120
+    Total combinational functions : 117
+    Dedicated logic registers : 37
+Total registers : 37
+Total pins : 19
+Total virtual pins : 0
+Total memory bits : 0
+Embedded Multiplier 9-bit elements : 0
+Total PLLs : 0

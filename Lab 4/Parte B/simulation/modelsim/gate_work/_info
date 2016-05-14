@@ -1,0 +1,102 @@
+m255
+K4
+z2
+13
+!s112 1.1
+!i10d 8192
+!i10e 25
+!i10f 100
+cModel Technology
+Z0 dC:/Users/tobia/Google Drive/Facu/9 semestre/VHDL - FPGA/Proyectos/Lab 4/SintetizadorFrec/simulation/modelsim
+Esintetizadorfrec
+Z1 w1462146063
+Z2 DPx10 cycloneive 20 cycloneive_atom_pack 0 22 9L7WOjalBLjVlJ:R>F9:13
+Z3 DPx10 cycloneive 21 cycloneive_components 0 22 zHe@=:>9cbU;4Xj]jOJ^60
+Z4 DPx4 ieee 16 vital_primitives 0 22 G>kiXP8Q9dRClKfK1Zn7j1
+Z5 DPx6 altera 11 dffeas_pack 0 22 VGN[`NdbD557>Wc5mPGc93
+Z6 DPx4 ieee 12 vital_timing 0 22 J>EBealN09f8GzldA[z2>3
+Z7 DPx3 std 6 textio 0 22 zE1`LPoLg^DX3Oz^4Fj1K3
+Z8 DPx4 ieee 14 std_logic_1164 0 22 eNV`TJ_GofJTzYa?f<@Oe1
+Z9 DPx6 altera 28 altera_primitives_components 0 22 z;MfmOU0<abV50UVn9d221
+R0
+Z10 8SintetizadorFrec_7_1200mv_85c_slow.vho
+Z11 FSintetizadorFrec_7_1200mv_85c_slow.vho
+l0
+L37
+V2e=NbbJkMjX^J<mGhSkXA2
+!s100 D4IKMnLdJ9N[K;gW61YF`1
+Z12 OV;C;10.4b;61
+31
+Z13 !s110 1462147905
+!i10b 1
+Z14 !s108 1462147905.000000
+Z15 !s90 -reportprogress|300|-93|-work|work|SintetizadorFrec_7_1200mv_85c_slow.vho|
+Z16 !s107 SintetizadorFrec_7_1200mv_85c_slow.vho|
+!i113 1
+Z17 o-93 -work work
+Z18 tExplicit 1
+Astructure
+R2
+R3
+R4
+R5
+R6
+R7
+R8
+R9
+DEx4 work 16 sintetizadorfrec 0 22 2e=NbbJkMjX^J<mGhSkXA2
+l257
+L69
+Vi[XRj:oLi<cXW5<DhmdQ<3
+!s100 P8a9BM4fWe^NPRQhTPfjm0
+R12
+31
+R13
+!i10b 1
+R14
+R15
+R16
+!i113 1
+R17
+R18
+Etb_sintetizadorfrec
+Z19 w1462145995
+Z20 DPx4 ieee 11 numeric_std 0 22 :ASDNFgHXf_ih3J@9F3Ze1
+R7
+R8
+R0
+Z21 8C:/Users/tobia/Google Drive/Facu/9 semestre/VHDL - FPGA/Proyectos/Lab 4/SintetizadorFrec/testbench/tb_SintetizadorFrec.vhd
+Z22 FC:/Users/tobia/Google Drive/Facu/9 semestre/VHDL - FPGA/Proyectos/Lab 4/SintetizadorFrec/testbench/tb_SintetizadorFrec.vhd
+l0
+L6
+VH:2cFkU4L`X>Uc0bbJ_K23
+!s100 Q]IJK?TCA?3Mj?f;m1`l@2
+R12
+31
+R13
+!i10b 1
+R14
+Z23 !s90 -reportprogress|300|-93|-work|work|C:/Users/tobia/Google Drive/Facu/9 semestre/VHDL - FPGA/Proyectos/Lab 4/SintetizadorFrec/testbench/tb_SintetizadorFrec.vhd|
+Z24 !s107 C:/Users/tobia/Google Drive/Facu/9 semestre/VHDL - FPGA/Proyectos/Lab 4/SintetizadorFrec/testbench/tb_SintetizadorFrec.vhd|
+!i113 1
+R17
+R18
+Aarc_tb_sintetizadorfrec
+R20
+R7
+R8
+DEx4 work 19 tb_sintetizadorfrec 0 22 H:2cFkU4L`X>Uc0bbJ_K23
+l40
+L9
+V`OVAYf_:WdYV0O3@I9<Q`0
+!s100 4EH_GRoZSz?_M^if1mUkk3
+R12
+31
+R13
+!i10b 1
+R14
+R23
+R24
+!i113 1
+R17
+R18

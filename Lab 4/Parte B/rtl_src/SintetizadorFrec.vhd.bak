@@ -1,0 +1,5 @@
+
+entity SintetizadorFrec is
+	port()
+	
+end SintetizadorFrec;
