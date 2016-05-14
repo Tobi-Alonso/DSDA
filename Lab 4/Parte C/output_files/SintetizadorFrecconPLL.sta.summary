@@ -1,0 +1,53 @@
+------------------------------------------------------------
+TimeQuest Timing Analyzer Summary
+------------------------------------------------------------
+
+Type  : Slow 1200mV 85C Model Setup 'ip_pll_inst|altpll_component|auto_generated|pll1|clk[0]'
+Slack : 833326.833
+TNS   : 0.000
+
+Type  : Slow 1200mV 85C Model Hold 'ip_pll_inst|altpll_component|auto_generated|pll1|clk[0]'
+Slack : 0.678
+TNS   : 0.000
+
+Type  : Slow 1200mV 85C Model Minimum Pulse Width 'clock_50'
+Slack : 9.819
+TNS   : 0.000
+
+Type  : Slow 1200mV 85C Model Minimum Pulse Width 'ip_pll_inst|altpll_component|auto_generated|pll1|clk[0]'
+Slack : 416666.375
+TNS   : 0.000
+
+Type  : Slow 1200mV 0C Model Setup 'ip_pll_inst|altpll_component|auto_generated|pll1|clk[0]'
+Slack : 833327.429
+TNS   : 0.000
+
+Type  : Slow 1200mV 0C Model Hold 'ip_pll_inst|altpll_component|auto_generated|pll1|clk[0]'
+Slack : 0.628
+TNS   : 0.000
+
+Type  : Slow 1200mV 0C Model Minimum Pulse Width 'clock_50'
+Slack : 9.799
+TNS   : 0.000
+
+Type  : Slow 1200mV 0C Model Minimum Pulse Width 'ip_pll_inst|altpll_component|auto_generated|pll1|clk[0]'
+Slack : 416666.376
+TNS   : 0.000
+
+Type  : Fast 1200mV 0C Model Setup 'ip_pll_inst|altpll_component|auto_generated|pll1|clk[0]'
+Slack : 833330.118
+TNS   : 0.000
+
+Type  : Fast 1200mV 0C Model Hold 'ip_pll_inst|altpll_component|auto_generated|pll1|clk[0]'
+Slack : 0.303
+TNS   : 0.000
+
+Type  : Fast 1200mV 0C Model Minimum Pulse Width 'clock_50'
+Slack : 9.400
+TNS   : 0.000
+
+Type  : Fast 1200mV 0C Model Minimum Pulse Width 'ip_pll_inst|altpll_component|auto_generated|pll1|clk[0]'
+Slack : 416666.446
+TNS   : 0.000
+
+------------------------------------------------------------

@@ -1,0 +1,72 @@
+--includes
+	library ieee;
+	use ieee.std_logic_1164.all;
+
+
+entity SintetizadorFrecconPLL is
+	port(	clock_50: 	in std_logic;
+			clock_sel:	in std_logic_vector(2 downto 0);
+			clock_out:	out std_logic;
+			siete_seg1:	out std_logic_vector(6 downto 0);
+			siete_seg0:	out std_logic_vector(6 downto 0);
+			pll_lock:	out std_logic
+		);
+	
+end SintetizadorFrecconPLL;
+
+architecture arc_SintetizadorFrecconPLL of SintetizadorFrecconPLL is
+	
+	--component declarations
+		component Deco7Seg is
+			port( Nro: in std_logic_vector (3 downto 0);
+				Sal: out std_logic_vector (0 to 6));
+		end component Deco7Seg;
+
+		component DivisorFrec is
+			port(	clock_50: 	in std_logic;
+					clock_sel:	in std_logic_vector(2 downto 0);
+					clock_out:	out std_logic;
+					digito1:	out std_logic_vector(3 downto 0);
+					digito0:	out std_logic_vector(3 downto 0)
+				);
+		end component DivisorFrec;
+
+
+		component registro is
+			generic(ANCHO: natural:=8);
+			port(
+				d :		in std_logic_vector(ANCHO-1 downto 0);
+				clk:	in std_logic;
+				q : 	out std_logic_vector(ANCHO-1 downto 0)
+				);
+		end component registro;
+
+		component ip_pll IS
+			PORT(
+				areset		: IN STD_LOGIC  := '0';
+				inclk0		: IN STD_LOGIC  := '0';
+				c0			: OUT STD_LOGIC ;
+				locked		: OUT STD_LOGIC 
+			);
+		END component ip_pll;
+
+	--internal signals declaration
+		signal digito1: std_logic_vector(3 downto 0);
+		signal digito0: std_logic_vector(3 downto 0);
+		signal syn_clock_sel: std_logic_vector(2 downto 0);
+		signal pll_clk_out:	std_logic;
+
+
+	begin
+
+		ip_pll_inst : ip_pll 		PORT MAP (areset=> areset_sig, inclk0=> clock_50, c0=> pll_clk_out, locked=> pll_lock);
+		sicronizadores: registro 	generic map(3)
+									port map(d=>clock_sel,clk=>clock_50,q=>syn_clock_sel);
+		divisor: DivisorFrec 		port map (clock_50,syn_clock_sel,clock_out,digito1,digito0);
+		SieteSeg1: Deco7Seg 		port map (digito1,siete_seg1);
+		SieteSeg0: Deco7Seg 		port map (digito0,siete_seg0);
+
+
+
+
+end architecture ; -- arc_SintetizadorFreconPLLc

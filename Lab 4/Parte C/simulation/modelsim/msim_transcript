@@ -1,0 +1,110 @@
+# do SintetizadorFrecconPLL_run_msim_gate_vhdl.do
+# if {[file exists gate_work]} {
+# 	vdel -lib gate_work -all
+# }
+# vlib gate_work
+# vmap work gate_work
+# Model Technology ModelSim ALTERA vmap 10.4b Lib Mapping Utility 2015.05 May 27 2015
+# vmap -modelsim_quiet work gate_work 
+# Copying C:/altera_lite/15.1/modelsim_ase/win32aloem/../modelsim.ini to modelsim.ini
+# Modifying modelsim.ini
+# ** Warning: Copied C:/altera_lite/15.1/modelsim_ase/win32aloem/../modelsim.ini to modelsim.ini.
+#          Updated modelsim.ini.
+# 
+# vcom -93 -work work {SintetizadorFrecconPLL_7_1200mv_85c_slow.vho}
+# Model Technology ModelSim ALTERA vcom 10.4b Compiler 2015.05 May 27 2015
+# Start time: 02:46:42 on May 09,2016
+# vcom -reportprogress 300 -93 -work work SintetizadorFrecconPLL_7_1200mv_85c_slow.vho 
+# -- Loading package STANDARD
+# -- Loading package TEXTIO
+# -- Loading package std_logic_1164
+# -- Loading package VITAL_Timing
+# -- Loading package VITAL_Primitives
+# -- Loading package dffeas_pack
+# -- Loading package altera_primitives_components
+# -- Loading package cycloneive_atom_pack
+# -- Loading package cycloneive_components
+# -- Compiling entity SintetizadorFrecconPLL
+# -- Compiling architecture structure of SintetizadorFrecconPLL
+# End time: 02:46:42 on May 09,2016, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# 
+# vcom -93 -work work {C:/Users/tobia/Google Drive/Facu/9 semestre/VHDL - FPGA/Proyectos/Lab 4/SintetizadorFrecconPLL/test_bench/tb_sintetizadorFrecconPLL.vhd}
+# Model Technology ModelSim ALTERA vcom 10.4b Compiler 2015.05 May 27 2015
+# Start time: 02:46:42 on May 09,2016
+# vcom -reportprogress 300 -93 -work work C:/Users/tobia/Google Drive/Facu/9 semestre/VHDL - FPGA/Proyectos/Lab 4/SintetizadorFrecconPLL/test_bench/tb_sintetizadorFrecconPLL.vhd 
+# -- Loading package STANDARD
+# -- Loading package TEXTIO
+# -- Loading package std_logic_1164
+# -- Compiling entity tb_sintetizadorFrecconPLL
+# -- Compiling architecture arc_tb_sintetizadorFrecconPLL of tb_SintetizadorFrecconPLL
+# End time: 02:46:42 on May 09,2016, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# 
+# vsim -t 1ps +transport_int_delays +transport_path_delays -sdftyp /DUT=SintetizadorFrecconPLL_7_1200mv_85c_vhd_slow.sdo -L altera -L cycloneive -L gate_work -L work -voptargs="+acc"  tb_sintetizadorFrecconPLL
+# vsim -t 1ps "+transport_int_delays" "+transport_path_delays" -sdftyp /DUT=SintetizadorFrecconPLL_7_1200mv_85c_vhd_slow.sdo -L altera -L cycloneive -L gate_work -L work -voptargs=""+acc"" tb_sintetizadorFrecconPLL 
+# Start time: 02:46:42 on May 09,2016
+# Loading std.standard
+# Loading std.textio(body)
+# Loading ieee.std_logic_1164(body)
+# Loading work.tb_sintetizadorfrecconpll(arc_tb_sintetizadorfrecconpll)
+# SDF 10.4b Compiler 2015.05 May 27 2015
+# 
+# Loading ieee.vital_timing(body)
+# Loading ieee.vital_primitives(body)
+# Loading altera.dffeas_pack
+# Loading altera.altera_primitives_components
+# Loading cycloneive.cycloneive_atom_pack(body)
+# Loading cycloneive.cycloneive_components
+# Loading work.sintetizadorfrecconpll(structure)
+# Loading ieee.std_logic_arith(body)
+# Loading cycloneive.cycloneive_io_obuf(arch)
+# Loading cycloneive.cycloneive_io_ibuf(arch)
+# Loading cycloneive.cycloneive_pllpack(body)
+# Loading ieee.std_logic_unsigned(body)
+# Loading cycloneive.cycloneive_pll(vital_pll)
+# Loading cycloneive.cycloneive_mn_cntr(behave)
+# Loading cycloneive.cycloneive_scale_cntr(behave)
+# Loading cycloneive.cycloneive_clkctrl(vital_clkctrl)
+# Loading cycloneive.cycloneive_ena_reg(behave)
+# Loading altera.dffeas(vital_dffeas)
+# Loading cycloneive.cycloneive_lcell_comb(vital_lcell_comb)
+# Loading instances from SintetizadorFrecconPLL_7_1200mv_85c_vhd_slow.sdo
+# Loading timing data from SintetizadorFrecconPLL_7_1200mv_85c_vhd_slow.sdo
+# ** Warning: Design size of 18155 statements exceeds ModelSim Altera Starter recommended capacity.
+# Expect performance to be adversely affected.
+# ** Note: (vsim-3587) SDF Backannotation Successfully Completed.
+#    Time: 0 ps  Iteration: 0  Instance: /tb_sintetizadorfrecconpll File: C:/Users/tobia/Google Drive/Facu/9 semestre/VHDL - FPGA/Proyectos/Lab 4/SintetizadorFrecconPLL/test_bench/tb_sintetizadorFrecconPLL.vhd
+# 
+# add wave *
+# ** Warning: (vsim-WLF-5000) WLF file currently in use: vsim.wlf
+# 
+#           File in use by: tobia  Hostname: TOBI-ASUS  ProcessID: 2172
+# 
+#           Attempting to use alternate WLF file "./wlfttvj7ff".
+# ** Warning: (vsim-WLF-5001) Could not open WLF file: vsim.wlf
+# 
+#           Using alternate file: ./wlfttvj7ff
+# 
+# view structure
+# .main_pane.structure.interior.cs.body.struct
+# view signals
+# .main_pane.objects.interior.cs.body.tree
+# run -all
+# ** Note: Cycloneive PLL locked to incoming clock
+#    Time: 72915 ps  Iteration: 3  Instance: /tb_sintetizadorfrecconpll/DUT/\ip_pll_inst|altpll_component|auto_generated|pll1\
+restart
+# Loading instances from SintetizadorFrecconPLL_7_1200mv_85c_vhd_slow.sdo
+# Loading timing data from SintetizadorFrecconPLL_7_1200mv_85c_vhd_slow.sdo
+# ** Note: (vsim-3587) SDF Backannotation Successfully Completed.
+#    Time: 0 ps  Iteration: 0  Instance: /tb_sintetizadorfrecconpll File: C:/Users/tobia/Google Drive/Facu/9 semestre/VHDL - FPGA/Proyectos/Lab 4/SintetizadorFrecconPLL/test_bench/tb_sintetizadorFrecconPLL.vhd
+run -all
+# GetModuleFileName: No se puede encontrar el módulo especificado.
+# 
+# 
+# ** Note: Cycloneive PLL locked to incoming clock
+#    Time: 72915 ps  Iteration: 3  Instance: /tb_sintetizadorfrecconpll/DUT/\ip_pll_inst|altpll_component|auto_generated|pll1\
+# Break key hit
+# Break in ForLoop loop at C:/altera_lite/15.1/modelsim_ase/win32aloem/../altera/vhdl/src/cycloneive/cycloneive_atoms.vhd line 3854
+# End time: 03:09:58 on May 09,2016, Elapsed time: 0:23:16
+# Errors: 0, Warnings: 3
