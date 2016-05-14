@@ -1,0 +1,57 @@
+
+library ieee;
+use ieee.std_logic_1164.all;
+use ieee.numeric_std.ALL;
+
+entity cont_up is
+	--generic (seed:std_logic_vector (3 downto 0) := "1000");
+	
+	port( clk: in std_logic;
+			reset: in std_logic;
+			--seed: in std_logic (3 downto 0);
+			--clk_int: in std_logic;
+			Sal_cont: out std_logic_vector (3 downto 0));
+end cont_up;
+
+architecture beh of cont_up is
+
+	--signal feedback:std_logic;
+	signal buses_ant:std_logic_vector(3 downto 0):="0000";
+	signal buses_post:std_logic_vector(3 downto 0);
+	
+begin
+			
+	process (clk)
+	begin
+			--feedback <= buses(1) xor buses(0);
+			if(rising_edge(clk)) then
+				if(reset=1) then
+					buses_ant<="0000";
+				else 
+					with buses_ant select
+						buses_post <= 	"0001"when "0000",
+											"0010"when "0001",
+											"0011"when "0010",
+											"0100"when "0011",
+											"0101"when "0100",
+											"0110"when "0101",
+											"0111"when "0110",
+											"1000"when "0111",
+											"1001"when "1000",
+											"1010"when "1001",
+											"1011"when "1010",
+											"1100"when "1011",
+											"1101"when "1100",
+											"1110"when "1101",
+											"1111"when "1110", 
+											"0000"when others;
+				end if;
+			end if;	
+					
+			sal_cont<=buses_post;
+			buses_ant<=buses_post;
+		
+	end process;
+	
+end beh;
+
