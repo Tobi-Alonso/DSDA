@@ -1,0 +1,51 @@
+|Cont_lfsr
+clk => FFD_sr:ff1.clk_int
+clk => FFD_sr:ffs:2:ff2.clk_int
+clk => FFD_sr:ffs:1:ff2.clk_int
+clk => FFD_sr:ffs:0:ff2.clk_int
+reset => FFD_sr:ff1.set_int
+reset => FFD_sr:ffs:2:ff2.reset_int
+reset => FFD_sr:ffs:1:ff2.reset_int
+reset => FFD_sr:ffs:0:ff2.reset_int
+Sal_cont[0] <= FFD_sr:ffs:0:ff2.Sal_int
+Sal_cont[1] <= FFD_sr:ffs:1:ff2.Sal_int
+Sal_cont[2] <= FFD_sr:ffs:2:ff2.Sal_int
+Sal_cont[3] <= FFD_sr:ff1.Sal_int
+
+
+|Cont_lfsr|FFD_sr:ff1
+set_int => Sal_int.IN0
+reset_int => Sal_int~reg0.ACLR
+reset_int => Sal_int.IN1
+data_int => Sal_int~reg0.DATAIN
+clk_int => Sal_int~reg0.CLK
+Sal_int <= Sal_int~reg0.DB_MAX_OUTPUT_PORT_TYPE
+
+
+|Cont_lfsr|FFD_sr:\ffs:2:ff2
+set_int => Sal_int.IN0
+reset_int => Sal_int~reg0.ACLR
+reset_int => Sal_int.IN1
+data_int => Sal_int~reg0.DATAIN
+clk_int => Sal_int~reg0.CLK
+Sal_int <= Sal_int~reg0.DB_MAX_OUTPUT_PORT_TYPE
+
+
+|Cont_lfsr|FFD_sr:\ffs:1:ff2
+set_int => Sal_int.IN0
+reset_int => Sal_int~reg0.ACLR
+reset_int => Sal_int.IN1
+data_int => Sal_int~reg0.DATAIN
+clk_int => Sal_int~reg0.CLK
+Sal_int <= Sal_int~reg0.DB_MAX_OUTPUT_PORT_TYPE
+
+
+|Cont_lfsr|FFD_sr:\ffs:0:ff2
+set_int => Sal_int.IN0
+reset_int => Sal_int~reg0.ACLR
+reset_int => Sal_int.IN1
+data_int => Sal_int~reg0.DATAIN
+clk_int => Sal_int~reg0.CLK
+Sal_int <= Sal_int~reg0.DB_MAX_OUTPUT_PORT_TYPE
+
+
