@@ -1,0 +1,286 @@
+--package
+--includes
+	library ieee;
+	use ieee.std_logic_1164.all;
+
+package Rs232_tx_pack is
+
+	--Declaration of divider constants for pll clock out@230400Hz
+		constant HALF_COUNT_115200: integer:= 1;
+		constant HALF_COUNT_38400: integer:= 3;
+		constant HALF_COUNT_9600: integer:= 12;
+		constant HALF_COUNT_4800: integer:= 24;
+
+	--Data parameters
+		constant CHAR_WIDTH: integer:=8;			--when changed, must change EOF,MEMORY
+		constant MAX_CHARS: integer:=40;		--when changed, must change addr_length
+		constant EOP: std_logic_vector(CHAR_WIDTH-1 downto 0):=x"00";	--End Of Phrase
+		constant CANT_PHRASES: integer:=4;		--when changed, must change pointers,addr_length
+		constant ADDR_LENGTH: natural:= 8;
+		constant MEM_SIZE: natural := 2**ADDR_LENGTH;
+		--Pointers to phrases
+			type int_vector is array (integer range <>) of integer;
+			constant POINTERS: int_vector(0 to CANT_PHRASES-1):=(0,MAX_CHARS,2*MAX_CHARS,3*MAX_CHARS);
+			constant PTR_SEL_WIDTH: integer:=2;
+
+		--memory data
+			type mem_type is array (MEM_SIZE-1 downto 0)of
+									std_logic_vector(CHAR_WIDTH-1 downto 0);
+			constant MEMORY: mem_type:=(
+			--phrase 1
+			0 => x"abcd",1 => x"beef",2 => x"5555",3 => x"1010",
+			4 => x"5a6b",5 => x"f0f0",6 => x"1234",7 => x"fabc",
+			8 => x"2345",9 => x"9876",10=> x"5432",11=> x"6666",
+			12 => x"0101", 13 => ,
+
+			--phrase 2
+			40=>
+
+			--phrase 3
+			80=>
+
+			--phrase 4
+			120=>
+
+			others=> x"00");
+
+
+	--Declaracion of parity function
+		function parity (word: in std_logic_vector) return std_logic;
+
+	--declaracion of ceil(log2()) function
+
+	
+
+
+	--declaracion of componentes
+
+
+		--declaration of register
+			component reg is
+				generic(REG_WIDTH: natural:=8);
+				port(
+					d :		in std_logic_vector(REG_WIDTH-1 downto 0);
+					rst:	in std_logic;
+					clk:	in std_logic;
+					q : 	out std_logic_vector(REG_WIDTH-1 downto 0));
+			end component reg;
+
+		--declaration of shift register
+			component shift_reg is
+				generic(REG_WIDTH: natural:=8);
+				port(
+					d :		in std_logic_vector(REG_WIDTH-1 downto 0);
+					rst:	in std_logic;
+					clk:	in std_logic;
+					shift:	in std_logic;
+					load:	in std_logic;
+					q : 	out std_logic_vector(REG_WIDTH-1 downto 0));
+			end component;
+
+		--declaration of timer
+			component Timer is
+				generic( timeout: integer:= CHAR_WIDTH);
+			    port (clk:	in std_logic;
+			  		rst:	in std_logic;
+			  		start:	in std_logic;
+			  		over:	out std_logic
+			  ) ;
+			end component ; -- Timer
+
+
+		--declaration of parity calculator
+			component Parity_cal is
+			  	port (
+					clk:	in std_logic;
+					calc:	in std_logic;
+					word:	in std_logic_vector(CHAR_WIDTH-1 downto 0);
+
+					parity_bit:	out std_logic
+			 	 ) ;
+			end component ; -- Parity_cal
+		
+		--declaration of frecuency divider
+			component FrecDivider is
+				generic(
+						--Declaration of divider constants
+							HALF_COUNT_00: integer:= 1;
+							HALF_COUNT_01: integer:= 3;
+							HALF_COUNT_10: integer:= 12;
+							HALF_COUNT_11: integer:= 24
+					);
+				
+				port(	clock_pll: 	in std_logic;
+						rst:		in std_logic;
+						clock_sel:	in std_logic_vector(1 downto 0);
+						clock_out:	out std_logic
+					);
+				
+			end component FrecDivider;
+
+		--declaration of reset module
+			component Reset_module is
+			  	port (
+					clk: 	in std_logic;
+					ini_tx:	in std_logic;
+					rst:	out std_logic
+			 	 ) ;
+			end component ; -- Reset_module
+
+		--declaration of phrase loader (loads the phrase/s selected)
+			component Phrase_loader is
+			  port (
+					clk:	in std_logic;
+					p0:		in std_logic;
+					p1:		in std_logic;
+					p2:		in std_logic;
+					p3:		in std_logic;
+					all_p:	in std_logic;
+					rst:	in std_logic;
+					ready:	in std_logic;
+
+					char:	out std_logic_vector(CHAR_WIDTH-1 downto 0);
+					char_ready:	out std_logic
+
+			 	 ) ;
+			end component ; -- Phrase_loader
+
+			--declaration of counter
+				component Counter is
+				 	port (
+						clk:		in std_logic;
+						inc:		in std_logic;
+						load: 		in std_logic;
+						start_num:	in std_logic_vector(ADRR_LENGTH-1 downto 0);
+						count_out:	out std_logic_vector(ADRR_LENGTH-1 downto 0)
+				 	) ;
+				end component ; -- Counter
+
+			--declaration of pointer generator
+				component Pointer_generator is
+				  port (
+						ptr_ptr:	in std_logic_vector(1 downto 0);
+						ptr:		out std_logic_vector(ADRR_LENGTH-1 downto 0)
+				  ) ;
+				end component ; -- Pointer_generator
+
+			--declaration of phrase loader control
+				component Phrase_loader_control is
+				  	port (
+						clk:	in std_logic;
+						eop:	in std_logic;
+						p0:		in std_logic;
+						p1:		in std_logic;
+						p2:		in std_logic;
+						p3:		in std_logic;
+						all_p:	in std_logic;
+						rst:	in std_logic;
+						ready:	in std_logic;
+
+						ptr_sel:	out std_logic_vector(1 downto 0);
+						next_char:	out std_logic;
+						load_ptr:	out std_logic;
+						char_ready:	out std_logic
+
+				 	 ) ;
+				end component ; -- Phrase_loader_control
+
+
+			--declaration of null detector
+				component Null_detector is
+				  port (
+						char:		in std_logic_vector(CHAR_WIDTH-1 downto 0);
+						eop:	out std_logic
+				  ) ;
+				end component ; -- Null_detector
+
+			--declaration of 2*n to n Mux
+				component Mux is
+					generic(BUS_WIDTH: integer:=4
+					 );
+				  	port (
+				  		in0:	in std_logic_vector(BUS_WIDTH-1 downto 0);
+				  		in1:	in std_logic_vector(BUS_WIDTH-1 downto 0);
+				  		sel:	in std_logic;
+				  		z:		out std_logic_vector(BUS_WIDTH-1 downto 0)
+				  	) ;
+				end component ; -- Mux
+
+
+			--declaration of ROM memory
+				component ROM_memory is
+					port(
+						clk:		in std_logic;
+						address:	in std_logic_vector(ADDR_LENGTH-1 downto 0);
+						data_out:	out std_logic_vector(CHAR_WIDTH-1 downto 0)
+					);
+				end component ROM_memory;
+
+		--declaration of RS232 tx controler
+			component Rs232_control is
+			  	port (
+							clk:			in std_logic;
+							estable_frec:	in std_logic;
+							char_rdy:			in std_logic;
+							info_bit:		in std_logic;
+							last_bit:		in std_logic;
+							parity_bit:		in std_logic;
+							rst:			in std_logic;
+
+							transmitting:	out std_logic;
+							ready:			out std_logic;
+							calc_parity:	out std_logic;
+							tx:				out std_logic;
+							shift:			out std_logic;
+							start_timer:	out std_logic
+			 	 ) ;
+			end component ; -- Rs232_control
+
+		--declaration of inversor
+			component inversor is
+			  port (
+					in_value: in std_logic;
+					out_value: out std_logic
+			  ) ;
+			end component ; -- inversor
+
+		--declaration of AND gate
+			component and_gate is
+			  port (
+				in0:		in std_logic;
+				in1:		in std_logic;
+				out_value:	out std_logic
+			  ) ;
+			end component ; -- and_gate
+
+		--declaration of pll
+			component ip_pll IS
+				PORT
+				(
+					areset		: IN STD_LOGIC  := '0';
+					inclk0		: IN STD_LOGIC  := '0';
+					c0			: OUT STD_LOGIC ;
+					locked		: OUT STD_LOGIC 
+				);
+			end component ip_pll;
+
+
+
+end package ; -- Rs232_tx_pack 
+
+package body Rs232_tx_pack is
+
+	--Definition of parity function
+		function parity (word: in std_logic_vector) return std_logic is
+			variable parity_bit: std_logic;
+			begin
+				parity_bit:='0';
+				for i in word'range loop
+					if word(i)='1' then
+						parity_bit:= not parity_bit;
+					end if ;
+				end loop ;
+				return parity_bit;
+		end function;
+
+end Rs232_tx_pack ;

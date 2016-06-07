@@ -1,0 +1,57 @@
+--Timer
+--includes
+	library ieee;
+	use ieee.std_logic_1164.all;
+	use work.Rs232_tx_pack.all;
+
+entity Timer is
+	generic( timeout: integer:= CHAR_WIDTH);
+    port (clk:	in std_logic;
+  		rst:	in std_logic;
+  		start:	in std_logic;
+  		over:	out std_logic
+  ) ;
+end entity ; -- Timer
+
+architecture arch of Timer is
+	signal timer: natural range 0 to 7;
+	signal active: std_logic;
+	begin
+
+		start_reset_logic : process( clk )
+		begin
+			if( rising_edge(clk) ) then
+				if rst='1' then
+					active<='0';
+				elsif(start='1') then
+					timer<=7;
+					active<=1;
+				end if;
+			end if ;
+		end process ; -- start_detect
+
+		countdown : process( clk )
+		begin
+			if( rising_edge(clk) ) then
+				if active='1' then
+					timer<=timer-1;
+				end if ;	
+			end if ;
+		end process ; -- countdown
+
+		flag_reset : process( timer)
+		begin
+			if( timer=0 ) then
+				active<=0;
+			end if ;
+		end process ; -- flag_reset
+
+		output_generation : process( timer,active )
+		begin
+			over<='0';
+			if (timer=0 and active='1') then
+				over<='1';
+			end if ;
+		end process ; -- output_generation
+
+end architecture ; -- arch

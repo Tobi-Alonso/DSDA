@@ -1,0 +1,91 @@
+--Word loader
+
+--includes
+	library ieee;
+	use ieee.std_logic_1164.all;
+	use ieee.numeric_std.all;
+	use work.Rs232_tx_pack.all;
+
+entity Word_loader is
+  port (
+		clk:	in std_logic;
+		ready:	in std_logic;
+		p0:		in std_logic;
+		p1:		in std_logic;
+		p2:		in std_logic;
+		p3:		in std_logic;
+		tp:		in std_logic;
+		rst:	in std_logic;
+
+		wd_rdy:		out std_logic;
+		load:		out std_logic;
+		char_out:	out std_logic_vector(W_WIDTH-1 downto 0)
+  ) ;
+end entity ; -- Word_loader
+
+architecture arc_Word_loader of Word_loader is
+	
+	signal all_wd:	std_logic;
+	signal request: std_logic_vector(3 downto 0);
+	signal address: std_logic_vector(ADDR_LENGTH-1 downto 0);
+	signal char:	std_logic_vector(W_WIDTH-1 to 0);
+
+	--Definition of transmision procedure
+		procedure transmit (constant phrase: in integer) is
+			begin
+				address<=POINTERS(phrase);  -- i can also load de next pointer to avoid jumping to the next phrase
+				wait until rising_edge(clk);	--first char ready to be read
+				tx_phrase : while (char/=EOF and rst=='0') loop -- and to_integer(unsigned(address))<(POINTERS(phrase)+MAX_CHARS)) loop
+					char_out<= char;
+					load<='1';
+					wd_rdy<='1';
+					wait until rising_edge(clk);
+					load<='0';
+					wd_rdy<='0';
+					address<=std_logic_vector(unsigned(address)+'1'); -- loads next char
+					wait until (risin g_edge(clk) & ready=='1' );
+
+				end loop; 
+		end procedure transmit;
+
+
+begin
+	synchronizer: registro generic map(5)
+							port map(d(0)=>p0,d(1)=>p1,d(2)=>p2,d(3)=>p3,d(4)=>tp,
+									rst=>rst,clk=>clk,q(4)=>all_wd,q(3 downto 0)=>request);
+
+	data: ROM_memory port map(clk,address,char);
+
+	reset : process( clock )
+	begin
+		if( rising_edge(clock) ) then
+			load<='0';
+			wd_rdy<='0';
+		end if ;
+	end process ; -- reset
+
+
+	load : process( clock )
+		begin
+			if(rising_edge(clk)) then				
+				if (ready=='1' and rst=='0') then						
+					if all_wd=='1' then							
+						tx_all : for phrase in 0 to CANT_PHRASES-1 loop
+							transmit(phrase);								
+						end loop ; -- tx_all		
+
+					else							
+						case( request ) is							
+							when "0001" =>	transmit(0);
+							when "0010" =>	transmit(1);
+							when "0000" =>	transmit(2);
+							when "0000" =>	transmit(3);					
+							when others =>NULL;						
+						end case ;
+
+					end if ;
+				end if ;
+			end if ;	
+	end process ; -- load
+
+end architecture ; -- arc_Word_loader

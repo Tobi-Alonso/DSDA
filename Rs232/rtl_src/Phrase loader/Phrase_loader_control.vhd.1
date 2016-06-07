@@ -1,0 +1,167 @@
+--phrase loader controller
+--includes
+	library ieee;
+	use ieee.std_logic_1164.all;
+	use ieee.numeric_std.all;
+	use work.Rs232_tx_pack.all;
+
+entity Phrase_loader_control is
+  	port (
+		clk:	in std_logic;
+		eop:	in std_logic;
+		p0:		in std_logic;
+		p1:		in std_logic;
+		p2:		in std_logic;
+		p3:		in std_logic;
+		all_p:	in std_logic;
+		rst:	in std_logic;
+		ready:	in std_logic;
+
+		ptr_sel:	out std_logic_vector(PTR_SEL_WIDTH-1 downto 0);
+		next_char:	out std_logic;
+		load_ptr:	out std_logic;
+		char_ready:	out std_logic
+
+ 	 ) ;
+end entity ; -- Phrase_loader_control
+
+architecture arch of Phrase_loader_control is
+	type loader_states is (IDLE,LD_ALL,LD_0,LD_1,LD_2,LD_3,WAIT_ALL,WAIT_1,TX_ALL,TX_1);
+	signal current_state: loader_states;
+	signal next_state: loader_states;
+
+	--internal signals
+		signal ptr_ptr:	std_logic_vector(PTR_SEL_WIDTH-1 downto 0);
+		signal clr_ptr_ptr: std_logic;
+		signal inc_ptr_ptr: std_logic;
+
+	--auxiliar signals for sync
+		signal all_p_sync:	std_logic;
+		signal request: std_logic_vector(3 downto 0);
+		signal aux_sync: std_logic_vector(4 downto 0);
+
+	begin
+		synchronizer1: reg generic map(5)
+								port map(d(4)=>all_p,d(3)=>p3,d(2)=>p2,d(1)=>p1,d(0)=>p0,
+									rst=>rst,clk=>clk,q=>aux_sync);
+		synchronizer2: reg generic map(5)
+								port map(d=>aux_sync, rst=>rst,clk=>clk,
+									q(4)=>all_p_sync,q(3 downto 0)=>request);
+
+		current_state_logic : process( clk )
+			begin
+				if( rising_edge(clk) ) then			
+					current_state<=next_state;
+				end if ;
+		end process ; -- current_state_logic
+
+		next_state_logic : process(current_state,request,all_p_sync,ready,rst,ptr_ptr,eop)
+			begin
+				if rst='1' then
+					next_state<=IDLE;
+				else
+					case( current_state ) is
+					
+						when IDLE =>
+							if all_p_sync='1' then							
+								next_state<=LD_ALL;	
+							else							
+								case( request ) is							
+									when "0001" =>	next_state<=LD_0;
+									when "0010" =>	next_state<=LD_1;
+									when "0100" =>	next_state<=LD_2;
+									when "1000" =>	next_state<=LD_3;				
+									when others => 	next_state<=IDLE;		
+								end case ;
+							end if ;
+
+						when LD_ALL =>
+							if(ptr_ptr=3) then
+								next_state<=IDLE;
+							else
+								next_state<=WAIT_ALL;
+							end if;
+
+						when WAIT_ALL =>
+							if (eop='1' and (all_p_sync/='0' or ptr_ptr/=3 )) then
+								-- and (not(all_p_sync) or ptr_ptr/=3 ) is used 
+								-- to avoid sending the phrases more than once
+								next_state<=LD_ALL;
+							elsif (eop='0' and ready='1') then
+								next_state<= TX_ALL;
+							else
+								next_state<=WAIT_ALL;						
+							end if ;
+
+						when TX_ALL =>	next_state<=WAIT_ALL;
+						when LD_0 => 	next_state<= WAIT_1;
+						when LD_1 =>	next_state<= WAIT_1;						
+						when LD_2 =>	next_state<= WAIT_1;
+						when LD_3 =>	next_state<= WAIT_1;
+						when WAIT_1 =>
+							if (eop='1' and request="0000") then
+								-- and request="0000", is used 
+								-- to avoid sending the phrase more than once
+								next_state<=IDLE;
+							elsif (eop='0' and ready='1') then
+								next_state<= TX_1;
+							else
+								next_state<=WAIT_1;						
+							end if ;
+
+						when TX_1 =>	next_state<=WAIT_1;		
+					end case ;
+				end if ;	
+		end process ; -- next_state_logic
+
+		output_logic : process( current_state,ptr_ptr )	--add ptr_ptr to avoid latch
+			begin
+				ptr_sel<="00";
+				next_char<='0';
+				load_ptr<='0';
+				char_ready<='0';
+				case( current_state ) is			
+					when IDLE =>	NULL;
+					when LD_ALL =>	ptr_sel<=ptr_ptr;
+									load_ptr<='1';
+
+					when WAIT_ALL => ptr_sel<=ptr_ptr;--it's not necesary, just simplify logic, can i use '-'?
+					when TX_ALL =>	char_ready<='1';
+									next_char<='1';
+									ptr_sel<=ptr_ptr; --it's not necesary, just simplify logic, can i use '-'?
+
+					when LD_0 => ptr_sel<="00";
+					when LD_1 => ptr_sel<="01";						
+					when LD_2 => ptr_sel<="10";
+					when LD_3 => ptr_sel<="11";
+					when WAIT_1 =>	NULL;
+					when TX_1 => char_ready<='1';
+								 next_char<='1';
+				end case ;	
+		end process ; -- output_logic
+
+
+		--pointer of pointers logic ----used to load all the phrases
+			ptr_ptr_inst: counter 	generic map(PTR_SEL_WIDTH)
+									port map(clk,clr_ptr_ptr,inc_ptr_ptr,'0',
+											std_logic_vector(to_unsigned(0,PTR_SEL_WIDTH)),ptr_ptr,open);
+
+			--internal signales generation
+			with current_state select
+				clr_ptr_ptr<=	'1' when IDLE,
+								'0' when LD_ALL|WAIT_ALL|TX_ALL,
+								'-' when others;
+
+			with current_state select
+				inc_ptr_ptr<=	'1' when LD_ALL,
+								'0' when WAIT_ALL|TX_ALL,
+								'-' when others;
+
+
+end architecture ; -- arch
+
+
+
+
+
+
