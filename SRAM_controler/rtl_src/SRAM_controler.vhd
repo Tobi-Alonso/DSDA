@@ -30,7 +30,6 @@ end entity ; -- SRAM_controler
 architecture arch of SRAM_controler is
 	--internal signals
 		signal LatchEN_wire: std_logic;
-		signal FilteredLatchEN_wire: std_logic;
 
 		signal load_wire: std_logic;
 		signal ld1_2_wire: std_logic;
