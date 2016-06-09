@@ -1,6 +1,4 @@
 --ControlUnit.vhd v 3
---ControlUnit v 2.1
---control unit v 2
 
 --includes
 	library ieee;
@@ -99,7 +97,7 @@
 
 		piped_output_logic : process(next_state )
 		begin
-			LatchAddr_L<='0';	
+			async_LatchAddr_L<='0';	
 			async_eoop<='1';			
 			-- memory control output
 			async_CE_L<='1';			
@@ -109,7 +107,7 @@
 			async_UB_L<='0';			
 			async_LB_L<='0';		
 			case( next_state ) is
-				when IDLE => LatchAddr_L<='1';
+				when IDLE => async_LatchAddr_L<='1';
 				when RD1=> 	async_OE_L<='0';
 								async_CE_L<='0';
 								async_eoop<='0';
