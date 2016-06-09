@@ -77,19 +77,10 @@ architecture arch of SRAM_controler is
 
 
 		AdrrLatch:  MyLatch 	generic map(ADDR_WIDTH)
-									port map( 	EN=> FilteredLatchEN_wire, 
+									port map( 	EN=> LatchEN_wire, 
 												Din=>AddrIN ,
 												Dout=>   AddrOUT
 										);
-
-		GitchFilter: ffd	port map( 	d => LatchEN_wire,	
-									rst=> rst,	
-									clk=>clock	,	
-									q =>FilteredLatchEN_wire	
-						);
-
-
-
 
 
 end architecture ; -- arch
