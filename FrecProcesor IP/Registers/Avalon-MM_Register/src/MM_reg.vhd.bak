@@ -1,0 +1,31 @@
+--packs
+	library ieee;
+	use ieee.std_logic_1164.all;
+
+entity MM_reg is
+  port (
+	csi_clk : in std_logic;
+	rsi_reset : in std_logic;
+	--address : in std_logic;
+	avs_wr : in std_logic;
+	avs_writedata : in std_logic_vector(7 downto 0);
+	avs_rd : in std_logic;
+	avs_readdata : in std_logic_vector(7 downto 0)
+  ) ;
+end entity ; -- MM_reg
+
+architecture arch of MM_reg is
+begin
+	
+	process( csi_clk, rsi_reset )
+	begin
+	  if( rsi_reset = '1' ) then
+	    	avs_readdata<=(others=>'0');
+	  elsif( rising_edge(csi_clk) ) then
+	  	if wr='1' then
+			avs_readdata<=avs_writedata;
+	  	end if ;	
+	  end if ;
+	end process ; -- 
+
+end architecture ; -- arch

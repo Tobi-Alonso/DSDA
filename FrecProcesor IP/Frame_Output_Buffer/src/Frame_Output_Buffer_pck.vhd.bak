@@ -1,0 +1,89 @@
+--packs
+	library ieee;
+	use ieee.std_logic_1164.all;
+
+package Frame_Output_Buffer_pck is
+
+	function log2ceil (num:integer) return integer ;
+
+	--component declaration
+		component Frame_Output_Buffer_ctrl is
+			generic(
+				FFT_LENGTH : integer := 2048;
+				FRAME_SIZE: integer := 32
+				);
+			port (
+				clock : in std_logic;
+				reset : in std_logic;
+				--Avalon-ST hdsk signals
+				valid : in std_logic;
+				sop : in std_logic;
+				eop : in std_logic;
+				err : in std_logic_vector(1 downto 0);
+				ready : out std_logic;
+				--internal signals
+				next_edge : in std_logic;
+				max_addr : in std_logic;
+				we : out std_logic;
+				err_out: out std_logic
+			  ) ;
+		end component ; -- Frame_Output_Buffer_ctrl
+
+		component FIFO is
+			generic(
+			  	MEM_SIZE: integer := 63;
+			  	DATA_WIDTH : integer := 16
+			  	);
+		 	port (
+				clock : in std_logic;
+				reset: in std_logic;
+				--control signals
+				we: in std_logic;
+				shift: in std_logic;
+				address: in std_logic_vector(natural(ceil(log2(MEM_SIZE))) downto 0);
+				writedata: in std_logic_vector(DATA_WIDTH-1 downto 0);
+				readdata : in std_logic_vector(DATA_WIDTH-1 downto 0)
+			  ) ;
+		end component ; -- FIFO
+
+		component Counter is
+			generic(
+				MAX_VAL: integer 
+				);
+			port (
+				clock: in std_logic;
+				reset: in std_logic;
+				inc: in std_logic;
+				dec: in std_logic;
+				out_count: out std_logic_vector(ceil(log2(MAX_VAL)) downto 0);
+				max_value: out std_logic
+			  ) ;
+		end component ; -- Counter
+
+		component Edge_detector is
+		  port (
+			clock: in std_logic;
+			reset: in std_logic;
+			next_data: in std_logic;
+			next_fall_edge: out std_logic
+		  ) ;
+		end component ; -- Edge_detector
+	
+end package ; -- Frame_Output_Buffer_pck 
+
+package body Frame_Output_Buffer_pck_p is
+	--log2ceil function definition
+	function log2ceil (n : integer) return integer is
+		variable m, p : integer;
+	begin
+		 m := 0;
+		 p := 1;
+		 for i in 0 to n loop
+		    if p < n then
+		      m := m + 1;
+		      p := p * 2;
+		    end if;
+		 end loop;
+	return m;
+	
+end ; -- Frame_Output_Buffer_pck_p 
